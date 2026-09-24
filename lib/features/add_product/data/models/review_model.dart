@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:convert';
+import 'package:fruit_hub_dashboard/features/add_product/domain/entities/review_entity.dart';
 
 class ReviewModel {
   final String name;
@@ -32,6 +32,15 @@ class ReviewModel {
       ratting: map['ratting'] as num,
       date: map['date'] as String,
       reviewDescription: map['reviewDescription'] as String,
+    );
+  }
+  factory ReviewModel.fromEntity(ReviewEntity entity) {
+    return ReviewModel(
+      name: entity.name,
+      image: entity.image,
+      ratting: entity.ratting,
+      date: entity.date,
+      reviewDescription: entity.reviewDescription,
     );
   }
 }

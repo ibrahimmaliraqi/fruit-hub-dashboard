@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:fruit_hub_dashboard/features/add_product/data/models/review_model.dart';
+import 'package:fruit_hub_dashboard/features/add_product/domain/entities/product.dart';
 
 class ProductModel {
   final String name;
@@ -32,7 +32,25 @@ class ProductModel {
     required this.isOrganic,
     required this.reviews,
   });
-
+  factory ProductModel.fromEntity(ProductEntity entity) {
+    return ProductModel(
+      name: entity.name,
+      code: entity.code,
+      description: entity.description,
+      price: entity.price,
+      expirationsMonths: entity.expirationsMonths,
+      numberOfCalories: entity.numberOfCalories,
+      unitAmount: entity.unitAmount,
+      image: entity.image,
+      isFeatured: entity.isFeatured,
+      isOrganic: entity.isOrganic,
+      reviews: entity.reviews
+          .map(
+            (review) => ReviewModel.fromEntity(review),
+          )
+          .toList(),
+    );
+  }
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
@@ -67,6 +85,36 @@ class ProductModel {
           (x) => ReviewModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
+    );
+  }
+
+  ProductModel copyWith({
+    String? name,
+    String? code,
+    String? description,
+    String? imageUrl,
+    num? price,
+    int? expirationsMonths,
+    int? numberOfCalories,
+    int? unitAmount,
+    File? image,
+    bool? isFeatured,
+    bool? isOrganic,
+    List<ReviewModel>? reviews,
+  }) {
+    return ProductModel(
+      name: name ?? this.name,
+      code: code ?? this.code,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      expirationsMonths: expirationsMonths ?? this.expirationsMonths,
+      numberOfCalories: numberOfCalories ?? this.numberOfCalories,
+      unitAmount: unitAmount ?? this.unitAmount,
+      image: image ?? this.image,
+      isFeatured: isFeatured ?? this.isFeatured,
+      isOrganic: isOrganic ?? this.isOrganic,
+      reviews: reviews ?? this.reviews,
     );
   }
 }
