@@ -17,18 +17,19 @@ class SupabaseStorage implements StorageRemote {
     required File file,
     required String path,
   }) async {
+    final time = DateTime.now().millisecondsSinceEpoch;
     try {
       final avatarFile = file;
       await supabase.storage
           .from('fruits_images')
           .upload(
-            '$path/${DateTime.now().millisecondsSinceEpoch}.png',
+            '$path/$time.png',
             avatarFile,
             fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
           );
       final String publicUrl = await supabase.storage
           .from('fruits_images')
-          .getPublicUrl('$path/${DateTime.now().millisecondsSinceEpoch}.png');
+          .getPublicUrl('$path/$time.png');
       return publicUrl;
     } catch (e) {
       throw ServerException(message: "حدث خطل برفع اصورة");

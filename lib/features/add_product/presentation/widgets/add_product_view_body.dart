@@ -1,10 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_hub_dashboard/core/widgets/custom_button.dart';
 import 'package:fruit_hub_dashboard/core/widgets/custom_text_field.dart';
+import 'package:fruit_hub_dashboard/core/widgets/loading.dart';
 import 'package:fruit_hub_dashboard/core/widgets/snack.dart';
+import 'package:fruit_hub_dashboard/features/add_product/domain/entities/product.dart';
+import 'package:fruit_hub_dashboard/features/add_product/presentation/manager/add_product/add_product_cubit.dart';
 import 'package:fruit_hub_dashboard/features/add_product/presentation/widgets/ImageField.dart';
 import 'package:fruit_hub_dashboard/features/add_product/presentation/widgets/IsFeaturedCheckBox.dart';
 import 'package:fruit_hub_dashboard/features/add_product/presentation/widgets/IsOrganciCheckBox.dart';
@@ -141,35 +144,65 @@ class _AddProductViewBodyState extends State<AddProductViewBody> {
               ),
               const SizedBox(height: 24),
 
-              CustomButton(
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    if (image == null) {
-                      Snack.show(
-                        context,
-                        message: 'لازم تخلي صورة',
-                        isError: true,
-                      );
-                    } else {
-                      log('كامل');
-                    }
+              BlocConsumer<AddProductCubit, AddProductState>(
+                listener: (context, state) {
+                  if (state is AddProductSuccess) {
+                    Snack.show(context, message: "تمت اضافه العنصر بنجاح");
+                  }
+                  if (state is AddProductFailure) {
+                    Snack.show(
+                      context,
+                      message: state.errMessage,
+                      isError: true,
+                    );
                   }
                 },
-                text: 'إضافة المنتج',
+                builder: (context, state) {
+                  if (state is AddProductLoading) {
+                    return Loading();
+                  }
+                  return CustomButton(
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (image == null) {
+                          Snack.show(
+                            context,
+                            message: 'لازم تخلي صورة',
+                            isError: true,
+                          );
+                        } else {
+                          final product = ProductEntity(
+                            name: nameController.text,
+                            code: codeController.text.toLowerCase(),
+                            description: descriptionController.text,
+                            price: num.parse(priceController.text),
+                            expirationsMonths: int.parse(
+                              expirationMonthsController.text,
+                            ),
+                            numberOfCalories: int.parse(
+                              numberOfCaloriesController.text,
+                            ),
+                            unitAmount: int.parse(unitAmountController.text),
+                            image: image!,
+                            isFeatured: isFeatured,
+                            isOrganic: isOrganic,
+                            reviews: [],
+                          );
+                          context.read<AddProductCubit>().addProduct(
+                            product: product,
+                          );
+                        }
+                      }
+                    },
+                    text: 'إضافة المنتج',
+                  );
+                },
               ),
 
               const SizedBox(height: 24),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void showError(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('يرجى اختيار صورة'),
       ),
     );
   }

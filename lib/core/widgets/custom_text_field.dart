@@ -45,8 +45,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       obscureText: _isObscured, // Use the state variable
       decoration: InputDecoration(
-        hintText: widget.hintText,
-        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+        labelText: widget.hintText,
+        labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
         filled: true,
         fillColor: Colors.grey[50],
         contentPadding: const EdgeInsets.symmetric(
