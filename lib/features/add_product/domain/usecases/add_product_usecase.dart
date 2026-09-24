@@ -1,4 +1,4 @@
-import '../entities/add_product_entity.dart';
+import '../entities/product.dart';
 import '../repositories/add_product_repo.dart';
 
 class AddProductUseCase {
@@ -8,7 +8,7 @@ class AddProductUseCase {
     required this.repository,
   });
 
-  Future<AddProductEntity> call() async {
+  Future<ProductEntity> call() async {
     return repository.getAddProduct();
   }
 }

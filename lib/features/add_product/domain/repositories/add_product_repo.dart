@@ -1,5 +1,5 @@
-import '../entities/add_product_entity.dart';
+import '../entities/product.dart';
 
 abstract class AddProductRepo {
-  Future<AddProductEntity> getAddProduct();
+  Future<ProductEntity> getAddProduct();
 }
