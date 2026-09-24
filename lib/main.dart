@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fruit_hub_dashboard/core/router/app_router.dart';
+import 'package:fruit_hub_dashboard/core/services/server_locator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'firebase_options.dart';
 
@@ -13,6 +14,7 @@ void main() async {
     publishableKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJob25sdmpndGhuZmNpbXluanhiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5MDA2ODE4MiwiZXhwIjoyMTA1NjQ0MTgyfQ._JAi1CgMpZb3AzYq9jd9EM6rThDQCe7py-szeGM09eY',
   );
+  setupLocator();
 
   runApp(const MyApp());
 }
